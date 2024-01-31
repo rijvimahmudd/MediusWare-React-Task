@@ -1,15 +1,26 @@
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { Link, useNavigate } from 'react-router-dom';
 
-function ModalA({show, setShow, filteredContacts, onCheckboxChange}) {
+function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchMoreData, next, hasMore}) {
+  const navigate = useNavigate()
   return (
     <>
       <Modal show={show} fullscreen={'xxl-down'} onHide={() => setShow(false)}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Modal</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <div id='scrollableDiv' style={{ height: '68vh', overflow: 'auto' }}> 
+        <InfiniteScroll 
+          dataLength={filteredContacts?.length}
+          next={()=>fetchMoreData(next)}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          scrollableTarget="scrollableDiv"
+        >
           <table className="table table-bordered">
             <thead>
               <tr>
@@ -19,15 +30,19 @@ function ModalA({show, setShow, filteredContacts, onCheckboxChange}) {
               </tr>
             </thead>
             <tbody>
-              {filteredContacts.map((contact) => (
-                <tr key={contact.id}>
-                  <td>{contact.id}</td>
-                  <td>{contact.phone}</td>
-                  <td>{contact.country.name}</td>
-                </tr>
+              {filteredContacts?.map((contact) => (
+                    // <Link to={`/contact/${contact.id}`} key={contact.id} relative='path' className='d-inline-block w-100'>
+                <tr key={contact.id} onClick={() => navigate(`/contact/${contact.id}`, {state: {data: {...contact, show: true}}})} style={{cursor: 'pointer'}} >
+                    <td>{contact.id}</td>
+                    <td>{contact.phone}</td>
+                    <td>{contact.country.name}</td>
+                  </tr>
+                    // </Link>
               ))}
             </tbody>
           </table>
+          </InfiniteScroll>
+        </div>
         </Modal.Body>
         <Modal.Footer>
         <InputGroup className="mb-3">
@@ -43,4 +58,4 @@ function ModalA({show, setShow, filteredContacts, onCheckboxChange}) {
   );
 }
 
-export default ModalA;
+export default ContactModal;
