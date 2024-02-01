@@ -3,13 +3,30 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Link, useNavigate } from 'react-router-dom';
+import ProfileCardModal from './ProfileCardModal';
+import { useState } from 'react';
 
 function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchMoreData, next, hasMore}) {
+  const [profileShow, setProfileShow] = useState(false);
+  const [profileData, setProfileData] = useState({});
+  const handleShow = (e, state={}) => {
+    e.preventDefault();
+    e.stopPropagation()
+    setProfileShow(true);
+    setProfileData(state);
+    console.log(state);
+  }
+
+  const handleClose = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setProfileShow(false);
+  }
   const navigate = useNavigate()
   return (
     <>
       <Modal show={show} fullscreen={'xxl-down'} onHide={() => setShow(false)}>
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>Modal</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -31,13 +48,11 @@ function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchM
             </thead>
             <tbody>
               {filteredContacts?.map((contact) => (
-                    // <Link to={`/contact/${contact.id}`} key={contact.id} relative='path' className='d-inline-block w-100'>
-                <tr key={contact.id} onClick={() => navigate(`/contact/${contact.id}`, {state: {data: {...contact, show: true}}})} style={{cursor: 'pointer'}} >
-                    <td>{contact.id}</td>
-                    <td>{contact.phone}</td>
-                    <td>{contact.country.name}</td>
-                  </tr>
-                    // </Link>
+                <tr key={contact.id} onClick={(e) => handleShow(e, contact)} style={{cursor: 'pointer'}} >
+                  <td>{contact.id}</td>
+                  <td>{contact.phone}</td>
+                  <td>{contact.country.name}</td>        
+                </tr> 
               ))}
             </tbody>
           </table>
@@ -54,6 +69,7 @@ function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchM
           </Button>
         </Modal.Footer>
       </Modal>
+      {profileData && <ProfileCardModal id={profileData?.id} phone={profileData?.phone} country={profileData?.country?.name} showModal={profileShow} handleClose={handleClose} /> }
     </>
   );
 }
