@@ -20,17 +20,22 @@ const Problem2 = () => {
                 <h4 className='text-center text-uppercase mb-5'>Problem-2</h4>
                 
                 <div className="d-flex justify-content-center gap-3">
-                    <Link to="/modal/all-contacts" state={{ background: location }}>
+                    <Link to="/modal/all-contacts" state={{ background: location}}>
                       <button  className="btn btn-lg btn-outline-primary" type="button">
-                        routable Contacts
+                        All Contacts
                       </button>
                     </Link>
-                    <button  className="btn btn-lg btn-outline-primary" type="button" onClick={handleShow(setAllShow)}>
+                    <Link to="/modal/us-contacts" state={{ background: location}}>
+                      <button  className="btn btn-lg btn-outline-warning" type="button">
+                        US Contacts
+                      </button>
+                    </Link>
+                    {/* <button  className="btn btn-lg btn-outline-primary" type="button" onClick={handleShow(setAllShow)}>
                         All Contacts
                       </button>
                     <button className="btn btn-lg btn-outline-warning" type="button" onClick={handleShow(setUSShow)}>
                       US Contacts
-                    </button>
+                    </button> */}
 
                   </div>
                   

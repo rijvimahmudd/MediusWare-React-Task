@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import AllContactModal from '../contactModal/AllContactModal';
 import UsContactModal from '../contactModal/UsContactModal';
 
 const ModalWrapper = () => {
-   const navigate = useNavigate();
-    // const {modalType} = useParams();
-    // console.log("modalType", modalType);
+    const {name} = useParams();
+    const [show, setShow] = useState(true);
+    
   return (
     <div>
-       {/* {modalType === "all-contacts" && <h1>hello</h1>} */}
-       {/* {modalType === "us-contacts" && <UsContactModal {...props} />} */}
-       <h1>Zerr</h1>
+       {name === "all-contacts" && <AllContactModal  show={show} setShow={setShow} navigate={true}/>}
+       {name === "us-contacts" && <UsContactModal show={show} setShow={setShow} navigate={true} />}
+
     </div>
   )
 }

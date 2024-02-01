@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useFetch from '../../hooks/useFetch';
 import { Modal } from '../Problem-2-components';
 
-const UsContactModal = ({show, setShow}) => {
+const UsContactModal = ({show, setShow, navigate}) => {
     const { filteredData, handleChange, nextPage, loading, error, fetchMoreData, hasMore } = useFetch(
         'https://contact.mediusware.com/api/country-contacts/United%20States/'
       );
@@ -17,6 +17,7 @@ const UsContactModal = ({show, setShow}) => {
             next={nextPage}
             fetchMoreData={fetchMoreData}
             onCheckboxChange={handleChange}
+            navigate = {navigate}
         />
     </div>
   )

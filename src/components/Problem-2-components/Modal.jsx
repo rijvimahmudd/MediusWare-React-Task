@@ -6,9 +6,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import ProfileCardModal from './ProfileCardModal';
 import { useState } from 'react';
 
-function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchMoreData, next, hasMore}) {
+function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchMoreData, next, hasMore, navigate=false}) {
   const [profileShow, setProfileShow] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const goBack = useNavigate();
   const handleShow = (e, state={}) => {
     e.preventDefault();
     e.stopPropagation()
@@ -22,10 +23,16 @@ function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchM
     e.stopPropagation();
     setProfileShow(false);
   }
-  const navigate = useNavigate()
   return (
     <>
-      <Modal show={show} fullscreen={'xxl-down'} onHide={() => setShow(false)}>
+      <Modal show={show} fullscreen={'md-down'} onHide={() => {
+        if(navigate) {
+          goBack(-1);
+          setShow(false)
+        }
+        else
+          setShow(false)
+      }}>
         <Modal.Header closeButton>
           <Modal.Title>Modal</Modal.Title>
         </Modal.Header>
@@ -64,7 +71,16 @@ function ContactModal({show, setShow, filteredContacts, onCheckboxChange, fetchM
         <InputGroup.Checkbox aria-label="Checkbox for following text input" onChange={onCheckboxChange}/>
         <InputGroup.Text id="basic-addon1">Only even</InputGroup.Text>
       </InputGroup>
-          <Button variant="secondary" onClick={() => setShow(false)}>
+          <Button variant="secondary" onClick={() => {
+            if(navigate) {
+              setShow(false);
+              goBack(-1);
+            }
+            else{
+              setShow(false);
+            }
+            
+          }}>
             Close
           </Button>
         </Modal.Footer>
